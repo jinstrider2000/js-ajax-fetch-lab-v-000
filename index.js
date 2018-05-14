@@ -14,7 +14,7 @@ function createIssue() {
 }
 
 function showResults(json) {
-  
+
 }
 
 function forkRepo() {
