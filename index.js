@@ -1,28 +1,43 @@
-function getIssues() {
-}
-
-function showIssues(body) {
-  json
-}
-
-function createIssue() {
-  const repo = 'jinstrider2000/javascript-fetch-lab';
-  fetch(`https://api.github.com/repos/${repo}/issues`,{
-    method: 'POST',
+function getIssues(body) {
+  const owner = body.user.login, repositoryURL = body.repository_url;
+  return fetch(`${repositoryURL}/issues`, {
+    method: 'GET',
     headers: {Authorization: `token ${getToken()}`}
   });
 }
 
-function showResults(body) {
-  const response = body.json();
-  $("#results").innerHTML = "";
-  $("#results").append(`<a href="${response.html_url}">${response.owner.login}'s "${response.name}" Fork</a>`);
+function showIssues(body) {
+  $("#issues").innerHTML = "";
+  body.forEach((issue) => {
+    const title = issue.title;
+    const body = issue.body;
+    const issueEntry = `
+    <ul>
+    <li>${title}</li>
+    <li>${body}</li>
+    </ul>
+    `.trim();
+    $("#issues").append(issueEntry);
+  });
 }
 
-function apiError(body) {
+function createIssue() {
+  const repo = 'jinstrider2000/javascript-fetch-lab';
+  const data = {
+    title: $("#title")[0].value,
+    body: $("#body")[0].value
+  };
+
+  fetch(`https://api.github.com/repos/${repo}/issues`,{
+    method: 'POST',
+    headers: {Authorization: `token ${getToken()}`},
+    body: JSON.stringify(data)
+  }).then(jsonify).then(getIssues).then(jsonify).then(showIssues);
+}
+
+function showResults(body) {
   $("#results").innerHTML = "";
-  $("#results").append("<p>Sorry, error contacting the GitHub API</p>");
-  console.log(body.text());
+  $("#results").append(`<a href="${body.html_url}">${body.owner.login}'s "${body.name}" Fork</a>`);
 }
 
 function forkRepo() {
@@ -30,7 +45,7 @@ function forkRepo() {
   fetch(`https://api.github.com/repos/${repo}/forks`,{
     method: 'POST',
     headers: {Authorization: `token ${getToken()}`}
-  }).then(showResults,apiError);
+  }).then(jsonify).then(showResults);
   //use fetch to fork it!
 }
 
@@ -38,4 +53,8 @@ function getToken() {
   //change to your token to run in browser, but set
   //back to '' before committing so all tests pass
   return "";
+}
+
+function jsonify(response) {
+  return response.json();
 }
