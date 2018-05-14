@@ -7,7 +7,8 @@ function getIssues(body) {
 }
 
 function showIssues(body) {
-  $("#issues").innerHTML = "";
+  const issuesDiv = document.getElementById('issues');
+  issuesDiv.innerHTML = "";
   body.forEach((issue) => {
     const title = issue.title;
     const body = issue.body;
@@ -17,15 +18,15 @@ function showIssues(body) {
     <li>${body}</li>
     </ul>
     `.trim();
-    $("#issues").append(issueEntry);
+    issuesDiv.innerHTML += issueEntry;
   });
 }
 
 function createIssue() {
   const repo = 'jinstrider2000/javascript-fetch-lab';
   const data = {
-    title: $("#title")[0].value,
-    body: $("#body")[0].value
+    title: document.getElementById('title').value,
+    body: document.getElementById('body').value
   };
 
   fetch(`https://api.github.com/repos/${repo}/issues`,{
@@ -36,8 +37,7 @@ function createIssue() {
 }
 
 function showResults(body) {
-  $("#results").innerHTML = "";
-  $("#results").append(`<a href="${body.html_url}">${body.owner.login}'s "${body.name}" Fork</a>`);
+  $("#results").innerHTML(`<a href="${body.html_url}">${body.owner.login}'s "${body.name}" Fork</a>`);
 }
 
 function forkRepo() {
