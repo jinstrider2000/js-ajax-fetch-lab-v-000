@@ -14,7 +14,14 @@ function createIssue() {
 }
 
 function showResults(json) {
+  $("#results").innerHTML = "";
+  $("#results").append("<p>Repo Forked</p>");
 
+}
+
+function apiError(json) {
+  $("#results").innerHTML = "";
+  $("#results").append()
 }
 
 function forkRepo() {
@@ -22,7 +29,7 @@ function forkRepo() {
   fetch(`https://api.github.com/repos/${repo}/forks`,{
     method: 'POST',
     headers: {Authorization: `token ${getToken()}`}
-  });
+  }).then(showResults,);
   //use fetch to fork it!
 }
 
