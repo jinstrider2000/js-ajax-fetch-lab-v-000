@@ -1,5 +1,5 @@
 function getIssues(body) {
-  const owner = body.user.login, repositoryURL = body.repository_url;
+  // const owner = body.user.login, repositoryURL = body.repository_url;
   return fetch(`${repositoryURL}/issues`, {
     method: 'GET',
     headers: {Authorization: `token ${getToken()}`}
