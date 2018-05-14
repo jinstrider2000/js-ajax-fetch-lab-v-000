@@ -10,10 +10,11 @@ function createIssue() {
   fetch(`https://api.github.com/repos/${repo}/issues`,{
     method: 'POST',
     headers: {Authorization: `token ${getToken()}`}
-  });
+  }).;
 }
 
 function showResults(json) {
+  
 }
 
 function forkRepo() {
