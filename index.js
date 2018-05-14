@@ -1,7 +1,7 @@
 function getIssues() {
 }
 
-function showIssues(json) {
+function showIssues(body) {
   json
 }
 
@@ -13,15 +13,16 @@ function createIssue() {
   });
 }
 
-function showResults(json) {
+function showResults(body) {
+  const response = body.json();
   $("#results").innerHTML = "";
-  $("#results").append("<p>Repo Forked</p>");
-
+  $("#results").append(`<a href="${response.html_url}">${response.owner.login}'s "${response.name}" Fork</a>`);
 }
 
-function apiError(json) {
+function apiError(body) {
   $("#results").innerHTML = "";
-  $("#results").append()
+  $("#results").append("<p>Sorry, error contacting the GitHub API</p>");
+  console.log(body.text());
 }
 
 function forkRepo() {
@@ -29,7 +30,7 @@ function forkRepo() {
   fetch(`https://api.github.com/repos/${repo}/forks`,{
     method: 'POST',
     headers: {Authorization: `token ${getToken()}`}
-  }).then(showResults,);
+  }).then(showResults,apiError);
   //use fetch to fork it!
 }
 
